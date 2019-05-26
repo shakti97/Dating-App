@@ -1,0 +1,30 @@
+.errorHeading span{
+    font-size : 200px;
+    margin: 15% 0%;
+    background: url('../../Assets/Images/background1.jpg') -100px -40px no-repeat;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.ErrorPage{
+    margin-top: 2%;
+    padding-bottom: 5.5%;
+    margin-bottom: 0%;
+}
+.errorSubHeading{
+color: #1976D2;
+}
+.errorContent p{
+    color: #777 !important;
+    line-height: 2em;
+    font-size: 1em;
+    letter-spacing: 1px;
+}
+.goToHomePage{
+    width: 15%;
+    border: none;
+    border-radius: 15px;
+    background-color: #1976D2;
+}
+.errorPageLink:hover{
+    color: black!important;
+}

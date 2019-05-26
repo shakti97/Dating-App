@@ -1,0 +1,60 @@
+.form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin-top: 20%;
+  margin-left: 20%;
+  background-color: #d6cdcd;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 10px 10px 8px 10px #b3b2b2;
+}
+.loginHeading {
+  font-weight: 800 !important;
+  font-size: 60px;
+  text-align: center;
+}
+.loginInputBox {
+  margin: 0% 0%;
+}
+.loginSubmit {
+  text-align: center;
+}
+/* .loginSubmit button{
+      margin-right: 2%;
+  } */
+.loginForm {
+  background-image: url("../../Assets/Images/back.jpg");
+  height: 720px;
+}
+.loginImage {
+  background: url("https://www.pubnub.com/wp-content/uploads/2018/01/how-to-build-tinder-409x178.png");
+  background-repeat: no-repeat;
+  position: relative;
+  background-size: 100% 100%;
+  /* position: relative;
+  height: 720px; */
+}
+.loginImageText {
+  font-size: 50px;
+  font-weight: 800;
+  position: absolute;
+  top: 30%;
+  right: 5%;
+  width: 50%;
+  text-align: right;
+}
+.loginIcon {
+  font-size: 100px;
+  color: #1976d2;
+}
+.validationFail {
+  margin-bottom: 10%;
+}
+
+/* .overlayWrapper{
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/3a/Gray_circles_rotate.gif') no-repeat fixed center;
+      z-index: 10;
+       */
+/* display: block; */
+/* position: absolute; */
+/* } */
