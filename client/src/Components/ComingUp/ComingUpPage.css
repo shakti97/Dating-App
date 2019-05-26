@@ -1,0 +1,8 @@
+.cominguppage{
+    font-size : 150px;
+    margin: 0% 0%;
+    padding: 12.5% 0%;
+    background: url('../../Assets/Images/background1.jpg') -100px -40px no-repeat;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
