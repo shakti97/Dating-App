@@ -1,9 +1,11 @@
-let jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const config = require('./config.js');
 
 let checkToken = (req, res, next) => {
-  let token = req.headers['x-access-token'] || req.headers['authorization'];
-  if (token.startsWith('Bearer ')) {
+  console.log("header",req.headers);
+  let token = req.headers['authtoken'] || req.headers['authorization'];
+  console.log('tpooken',token);
+  if (token.startsWith('Bearer')) {
     token = token.slice(7, token.length);
   }
 
@@ -27,6 +29,4 @@ let checkToken = (req, res, next) => {
   }
 };
 
-module.exports = {
-  checkToken: checkToken
-}
+module.exports= checkToken;

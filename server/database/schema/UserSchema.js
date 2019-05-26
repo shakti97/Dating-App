@@ -12,24 +12,18 @@ const userSchema=schema({
     password : {
         type : String
     },
-    role : {
+    imageUrl : {
         type : String
     },
-    loans : [{
-        loanId : {
-            type : String
-        },
-        amount : {
-            type : Number
-        },
-        status : {
-            type : String
-        },
-        LoanReason :{
-            type : String,
-            maxlength :200
-        }
-    }]
+    blocked : new mongoose.Schema({
+        email : [String]
+    }),
+    liked : new mongoose.Schema({
+        email : [String]
+    }),
+    superLiked : new mongoose.Schema({
+        email : [String]
+    })
 })
 var userModel=mongoose.model('users',userSchema);
 
