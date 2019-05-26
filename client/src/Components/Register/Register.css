@@ -1,0 +1,19 @@
+.register{
+    justify-content: center;
+    align-content: center;
+    background: url('../../Assets/Images/back.jpg');
+    min-height: 100vh; 
+}
+.form-register{
+    border: 1px solid grey;
+    padding: 3%;
+    border-radius: 10px;
+    background-color: rgb(192, 189, 189); 
+}
+.form-title{
+    padding-bottom: 3%;
+    font-size: 25px;
+    font-weight: 800;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
