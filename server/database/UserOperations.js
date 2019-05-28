@@ -12,9 +12,9 @@ cloudinary.config({
 
 const UserOperations = {
   UserSignUp(userObject, response) {
-    console.log("UserSingUp UserOperation");
+    // console.log("UserSingUp UserOperation"); 
     userObject.password = passwordHash.generate(userObject.password);
-    console.log(userObject);
+    // console.log(userObject);
     userSchema.create(userObject, (err, user) => {
       if (err) {
         console.log("Error in SignUp", err);
@@ -31,20 +31,20 @@ const UserOperations = {
     });
   },
   UserLogIn(userObject, request, response) {
-    console.log("UserLogIn UserOperation");
+    // console.log("UserLogIn UserOperation");
     userSchema.find(
       {
         email: userObject.email
       },
       (err, userDoc) => {
         if (err) {
-          console.log("Error in fetching userId ", err);
+          // console.log("Error in fetching userId ", err);
           response.status(500).json({
             success: false,
             message: "Id is not registered"
           });
         } else if (userDoc && userDoc.length > 0) {
-          console.log("Email id exist lets check the password");
+          // console.log("Email id exist lets check the password");
           let result = passwordHash.verify(
             userObject.password,
             userDoc[0].password
@@ -73,7 +73,7 @@ const UserOperations = {
     );
   },
   uploadImage(req, res) {
-    console.log(req);
+    // console.log(req);
     cloudinary.v2.uploader.upload(req.files.image.path, {}, function(
       error,
       result
@@ -88,7 +88,7 @@ const UserOperations = {
     });
   },
   getUsers(req, res) {
-    console.log("decodec: ", req.decoded);
+    // console.log("decodec: ", req.decoded);
     userSchema.find(
       { email :  { $ne  : req.decoded.userEmail}},{name : 1,email : 1,imageUrl : 1},
       (err, users) => {
@@ -98,7 +98,7 @@ const UserOperations = {
             message: "Internal Server Error"
           });
         }
-        console.log(users);
+        // console.log(users);
         res.json({
           success: true,
           message: "Successfuly Retrived Users ",

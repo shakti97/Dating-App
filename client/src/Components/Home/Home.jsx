@@ -30,7 +30,7 @@ class Home extends Component {
     return (
       <React.Fragment>
         <div className="card-container">
-            {this.state.userList.length !== 0 ? (
+            {this.state.userList && this.state.userList.length !== 0 ? (
             <div className="user-card">
                 {this.state.userList.map(user => {
                 return <UserCard userDetails={user} key={user._id}/>;

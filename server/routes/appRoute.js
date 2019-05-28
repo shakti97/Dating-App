@@ -10,9 +10,9 @@ router.post('/register', (req, res) => {
     UserOperation.UserSignUp(userObject, res);
 });
 router.post('/login', (req, res) => {
-    console.log('login');
+    // console.log('login');
     let userObject = req.body;
-    console.log('request headers ', req.headers);
+    // console.log('request headers ', req.headers);
     UserOperation.UserLogIn(userObject, req, res);
 });
 router.post('/uploadImage',multipartMiddleware,(req,res)=>{

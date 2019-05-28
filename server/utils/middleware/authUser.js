@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const config = require('./config.js');
 
 let checkToken = (req, res, next) => {
-  console.log("header",req.headers);
+  // console.log("header",req.headers);
   let token = req.headers['authtoken'] || req.headers['authorization'];
-  console.log('tpooken',token);
+  // console.log('tpooken',token);
   if (token.startsWith('Bearer')) {
     token = token.slice(7, token.length);
   }
