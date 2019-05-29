@@ -107,75 +107,69 @@ const UserOperations = {
       }
     );
   },
-  blockedUser(req, res) {
+  blockedUser(data, callback) {
     userSchema.findOneAndUpdate(
       {
-        email: req.decoded.email
+        email: data.currentEmail
       },
       {
         $push: {
-          blocked: req.body.email
+          blocked: data.targetEmail
         }
       },
       err => {
         if (err) {
-          res.send(500).json({
-            success: false,
-            message: "Internal Server Error"
-          });
+          console.log('Error in Blocked Db request');
+          // res.send(500).json({
+          //   success: false,
+          //   message: "Internal Server Error"
+          // });
         }
-        res.send(200).json({
-          success: true,
-          message: "user blocked successfully"
-        });
+        callback(data);
       }
     );
   },
-  likedUser(req, res) {
+  likedUser(data, callback) {
     userSchema.findOneAndUpdate(
       {
-        email: req.decoded.email
+        email: data.currentEmail
       },
       {
         $push: {
-          liked: req.body.email
+          liked: data.targetEmail
         }
       },
       err => {
         if (err) {
-          res.send(500).json({
-            success: false,
-            message: "Internal Server Error"
-          });
+          console.log('Error in liked Db request')
+          // res.send(500).json({
+          //   success: false,
+          //   message: "Internal Server Error"
+          // });
         }
-        res.send(200).json({
-          success: true,
-          message: "user liked successfully"
-        });
+        callback(data);
       }
     );
   },
-  superLikedUser(req, res) {
+  superLikedUser(data,callback) {
     userSchema.findOneAndUpdate(
       {
-        email: req.decoded.email
+        email: data.currentEmail
       },
       {
         $push: {
-          superLiked: req.body.email
+          superLiked: data.targetEmail
         }
       },
-      err => {
+      (err,doc) => {
         if (err) {
-          res.send(500).json({
-            success: false,
-            message: "Internal Server Error"
-          });
+          console.log('Error in super Liked Db Request');
+          // res.send(500).json({
+          //   success: false,
+          //   message: "Internal Server Error"
+          // });
         }
-        res.send(200).json({
-          success: true,
-          message: "user superliked successfully"
-        });
+        callback(doc);
       }
     );
   }
