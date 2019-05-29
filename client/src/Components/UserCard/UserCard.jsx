@@ -9,9 +9,9 @@ const UserCard=(props)=>{
           <div className="card-body">
             <h5 className="card-title">{props.userDetails.name}</h5>
             <div className="card-text">
-              <button className='btn-lg btn-primary'>Like</button>
-              <button className='btn-lg btn-success'>SuperLike</button>
-              <button className='btn-lg btn-danger'>Block</button>
+              <button className='btn-lg btn-primary' onClick={()=>props.Liked(props.userDetails.email)}>Like</button>
+              <button className='btn-lg btn-success' onClick={()=>props.SuperLiked(props.userDetails.email)}>SuperLike</button>
+              <button className='btn-lg btn-danger' onClick={()=>props.Blocked(props.userDetails.email)}>Block</button>
             </div>
           </div>
         </div>

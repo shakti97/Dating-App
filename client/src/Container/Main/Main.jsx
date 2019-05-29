@@ -12,7 +12,7 @@ class Main extends Component {
       <React.Fragment>
         <Header />
         <Switch>
-          <Route path="/dashboard" exact component={Home} />
+          <Route path="/dashboard/:email" exact component={Home} />
         </Switch>
       </React.Fragment>
     );

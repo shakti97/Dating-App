@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import './Login.css';
 import { ApiUrl } from "../../globalConst/globalConstFile";
 import Axios from 'axios';
-import openSocket from 'socket.io-client';
+
 
 class Login extends Component {
   constructor(props) {
@@ -13,8 +13,7 @@ class Login extends Component {
     this.state = {
       email : '',
       password : '',
-      submit : false,
-      socket : ''
+      submit : false
     };
   }
   handleChange=(event)=>{
@@ -34,18 +33,15 @@ class Login extends Component {
       email : this.state.email,
       password : this.state.password
     } 
-    const socket=openSocket('http://localhost:8080');
     Axios.post(ApiUrl.Api+"/login",requestBody)
     .then(response=>{
-      socket.emit('login',{socketId :socket.id  , data : requestBody.email})
       localStorage.setItem('authToken',response.data.token)
       this.setState({
         submit : false,
-        socket : socket.id
       },()=>{
         console.log(this.state);
       })
-      this.props.history.push('/dashboard');
+      this.props.history.push('/dashboard/'+this.state.email);
 
     }).catch(error=>{
       console.log(error.response);
