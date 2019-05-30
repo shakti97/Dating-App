@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 const dotenv=require('dotenv');
 
 dotenv.config();
-const userOperations=require('./database/UserOperations.js');
+
 const cors=require('./utils/cors.js');
 
 app.use(cors);
@@ -17,22 +17,27 @@ app.use('/',appRoute);
 http.listen(process.env.PORT || 8080,()=>{
     console.log('Server Started');
 })
+const userOperations=require('./database/UserOperations.js');
 var connectedSockets=[];
 const io=require('socket.io')(http);
 io.sockets.on('connection',(socket)=>{
     console.log('socket connected');
     socket.on('login',(data)=>{
         console.log('login user1 ',data);
-        connectedSockets.push(data.socketId);
+        connectedSockets.push(data);
         console.log('socket ',connectedSockets);
     })
     socket.on('liked',(data)=>{
         console.log("liked ",data);
-        userOperations.likedUser(data,(data)=>{
+        userOperations.likedUser(data,()=>{
             connectedSockets.forEach(socket=>{
+                console.log('socket liked',socket);
+                // console.log(socket.email);
+                // console.log(data.targetEmail);
                 if(socket.email==data.targetEmail){
-                    io.to(socket.id).emit('liked',{
-                        notificationMessage : 'Liked By' +data.currentEmail
+                    // console.log('liked emit ',socket.id);
+                    io.to(socket.socketId).emit('liked',{
+                        notificationMessage : 'Liked By ' +data.currentEmail
                     })
                 }
             })
@@ -40,24 +45,29 @@ io.sockets.on('connection',(socket)=>{
     })
     socket.on('superLiked',(data)=>{
         console.log('superLiked ',data);
-        userOperations.superLikedUser(data,(data)=>{
+        userOperations.superLikedUser(data,(doc)=>{
             connectedSockets.forEach(socket=>{
+                // console.log(socket.email);
+                // console.log(data.targetEmail);
                 if(socket.email==data.targetEmail){
-                    io.to(socket.id).emit('superLiked',{
-                        notificationMessage : 'SuperLiked By'+data.currentEmail,
-                        imageurl : data.imageUrl
+                    io.to(socket.socketId).emit('superLiked',{
+                        notificationMessage : 'SuperLiked By '+data.currentEmail,
+                        imageUrl : doc.imageUrl
                     })
                 }
             })
         });
     })
-    socket.on('blocked ',(data)=>{
-        console.log('blocked ',data)
+    socket.on('blocked',(data)=>{
+        console.log('blocked1 ',data)
         userOperations.blockedUser(data,(data)=>{
+            console.log("c1",connectedSockets);
             connectedSockets.forEach(socket=>{
-                if(socket.email==data.targetEmail){
-                    io.to(socket.id).emit('blocked',{
-                        notificationMessage : 'Blocked By'+data.currentEmail
+                if(socket.email==data.currentEmail){
+                    console.log('userOperation m dal diya hai');
+                    console.log(socket);
+                    io.to(socket.socketId).emit('blocked',{
+                        notificationMessage : 'Blocked User'+data.targetEmail
                     })
                 }
             })

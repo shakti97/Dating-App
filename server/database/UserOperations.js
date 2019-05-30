@@ -1,4 +1,4 @@
-const userSchema = require("./schema/UserSchema.js");
+const userSchema = require("./schema/UserSchema");
 const passwordHash = require("password-hash");
 const uniqueString = require("unique-string");
 const config = require("../utils/middleware/config.js");
@@ -107,6 +107,25 @@ const UserOperations = {
       }
     );
   },
+  getBlockedUser(req,res){
+    console.log('i m running');
+    userSchema.find({
+      email : req.decoded.userEmail
+    },{blocked : 1},(err,data)=>{
+      if(err){
+        res.send(500).json({
+          success : false,
+          message : 'Internal Server Error'
+        })
+      }
+      console.log(data);
+      res.json({
+        success : true,
+        message : 'Successfully fetched blocked user Array',
+        blockedArray : data[0]
+      })
+    })
+  },
   blockedUser(data, callback) {
     userSchema.findOneAndUpdate(
       {
@@ -120,6 +139,7 @@ const UserOperations = {
       err => {
         if (err) {
           console.log('Error in Blocked Db request');
+          return;
           // res.send(500).json({
           //   success: false,
           //   message: "Internal Server Error"
@@ -130,24 +150,29 @@ const UserOperations = {
     );
   },
   likedUser(data, callback) {
+    console.log('liked',data);
+    console.log('data.targetEmail', data);
+    let currentEmail=data.currentEmail;
+    let targetEmail=data.targetEmail;
     userSchema.findOneAndUpdate(
       {
-        email: data.currentEmail
+        email: currentEmail
       },
       {
         $push: {
-          liked: data.targetEmail
+          liked: targetEmail
         }
       },
-      err => {
+      (err,doc) => {
         if (err) {
-          console.log('Error in liked Db request')
+          console.log(err);
+          return;
           // res.send(500).json({
           //   success: false,
           //   message: "Internal Server Error"
           // });
         }
-        callback(data);
+        callback();
       }
     );
   },
@@ -164,11 +189,13 @@ const UserOperations = {
       (err,doc) => {
         if (err) {
           console.log('Error in super Liked Db Request');
+          return;
           // res.send(500).json({
           //   success: false,
           //   message: "Internal Server Error"
           // });
         }
+        console.log('doc',doc);
         callback(doc);
       }
     );

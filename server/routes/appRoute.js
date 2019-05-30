@@ -30,5 +30,8 @@ router.post('/liked',checkToken,(req,res)=>{
 router.post('/superLiked',checkToken,(req,res)=>{
     UserOperation.superLikedUser(req,res);
 })
+router.get('/getBlockedUser',checkToken,(req,res)=>{
+    UserOperation.getBlockedUser(req,res);
+})
 
 module.exports = router;

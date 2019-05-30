@@ -15,15 +15,9 @@ const userSchema=schema({
     imageUrl : {
         type : String
     },
-    blocked : new mongoose.Schema({
-        email : [String]
-    }),
-    liked : new mongoose.Schema({
-        email : [String]
-    }),
-    superLiked : new mongoose.Schema({
-        email : [String]
-    })
+    blocked : [String],
+    liked : [String],
+    superLiked : [String]
 })
 var userModel=mongoose.model('users',userSchema);
 
