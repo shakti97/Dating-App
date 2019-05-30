@@ -4,6 +4,7 @@ import { ApiUrl } from "../../globalConst/globalConstFile";
 import UserCard from "../UserCard/UserCard";
 import './Home.css';
 import openSocket from 'socket.io-client';
+import Modal from "../../Container/Main/Modal/Modal";
 
 const socket=openSocket('http://localhost:8080');
 class Home extends Component {
@@ -11,8 +12,16 @@ class Home extends Component {
     super(props);
     this.state = {
       userList: [],
-      socket : ''
+      socket : '',
+      showModal : false,
+      modalData : '',
+      blockedUserArray : []
     };
+  }
+  hideModal=()=>{
+      this.setState({
+          showModal :false
+      })
   }
   componentWillMount(){
       console.log('component Will Mount');
@@ -22,6 +31,23 @@ class Home extends Component {
     console.log('socokwvs ',socket);
     socket.emit('login',{socketId :socket.id  , email : this.props.match.params.email})
     console.log("getUsers ", localStorage.getItem("authToken"));
+    socket.on('liked',(data)=>{
+        this.setState({
+            showModal : true,
+            modalData : data
+        })
+    })
+    socket.on('superLiked',(data)=>{
+        console.log('superLiked');
+        this.setState({
+            showModal : true,
+            modalData : data
+        })
+    })
+    socket.on('blocked',(data)=>{
+        console.log('blocked aya',data);
+        this.getBlockedUser();
+    })
     Axios.get(ApiUrl.Api + "/getUsers", {
       headers: { authToken: localStorage.getItem("authToken") }
     })
@@ -29,11 +55,39 @@ class Home extends Component {
         console.log(response);
         this.setState({
           userList: response.data.userList
+        },()=>{
+          this.getBlockedUser();
         });
       })
       .catch(error => {
         console.log(error.response);
       });
+  }
+  getBlockedUser=()=>{
+    Axios.get(ApiUrl.Api+"/getBlockedUser",{headers : {authToken : localStorage.getItem('authToken')}}).then(response=>{
+      this.setState({
+        blockedUserArray : response.data.blockedArray.blocked
+      },()=>{
+        console.log(this.state.blockedUserArray)
+        let userList=this.state.userList;
+        userList.map(user=>{
+          if(this.state.blockedUserArray.includes(user.email)){
+            user.visible=false
+          }
+          else{
+            user.visible=true
+          }
+          return user;
+        })
+        this.setState({
+          userList : userList
+        },()=>{
+          console.log('after blocked run ',this.state.userList);
+        })
+      })
+    }).catch(error=>{
+      console.log(error.response);
+    })
   }
   Liked=(email)=>{
     socket.emit('liked',{currentEmail : this.props.match.params.email, targetEmail : email})
@@ -42,6 +96,7 @@ class Home extends Component {
     socket.emit('superLiked',{currentEmail : this.props.match.params.email, targetEmail : email})
   }
   Blocked=(email)=>{
+    console.log('blocked');
     socket.emit('blocked',{currentEmail : this.props.match.params.email,targetEmail : email})
   }
   render() {
@@ -58,6 +113,12 @@ class Home extends Component {
             "No Data Available"
             )}
         </div>
+        {this.state.showModal && <Modal handleClose={this.hideModal} show={this.state.showModal} modalTitle="Notification">
+              <div>
+                <div>{this.state.modalData.notificationMessage}</div>
+                {this.state.modalData.imageUrl && <div><img src={this.state.modalData.imageUrl} height="200" width="200" alt="Liked by User"/></div>}
+              </div>
+        </Modal>}
       </React.Fragment>
     );
   }
