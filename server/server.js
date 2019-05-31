@@ -22,16 +22,29 @@ var connectedSockets=[];
 const io=require('socket.io')(http);
 io.sockets.on('connection',(socket)=>{
     console.log('socket connected');
+    socket.emit('connection');
     socket.on('login',(data)=>{
         console.log('login user1 ',data);
-        connectedSockets.push(data);
+        var found;
+        if(data.socketId){
+            connectedSockets.map(socket=>{
+                if(socket.email==data.email){
+                    found=true;
+                    socket.socketId=data.socketId;
+                }
+                return socket;
+            })
+            if(!found){
+                connectedSockets.push(data);
+            }
+        }
         console.log('socket ',connectedSockets);
     })
     socket.on('liked',(data)=>{
-        console.log("liked ",data);
+        // console.log("liked ",data);
         userOperations.likedUser(data,()=>{
             connectedSockets.forEach(socket=>{
-                console.log('socket liked',socket);
+                // console.log('socket liked',socket);
                 // console.log(socket.email);
                 // console.log(data.targetEmail);
                 if(socket.email==data.targetEmail){
@@ -44,7 +57,7 @@ io.sockets.on('connection',(socket)=>{
         });
     })
     socket.on('superLiked',(data)=>{
-        console.log('superLiked ',data);
+        // console.log('superLiked ',data);
         userOperations.superLikedUser(data,(doc)=>{
             connectedSockets.forEach(socket=>{
                 // console.log(socket.email);
@@ -59,13 +72,13 @@ io.sockets.on('connection',(socket)=>{
         });
     })
     socket.on('blocked',(data)=>{
-        console.log('blocked1 ',data)
+        // console.log('blocked1 ',data)
         userOperations.blockedUser(data,(data)=>{
-            console.log("c1",connectedSockets);
+            // console.log("c1",connectedSockets);
             connectedSockets.forEach(socket=>{
                 if(socket.email==data.currentEmail){
-                    console.log('userOperation m dal diya hai');
-                    console.log(socket);
+                    // console.log('userOperation m dal diya hai');
+                    // console.log(socket);
                     io.to(socket.socketId).emit('blocked',{
                         notificationMessage : 'Blocked User'+data.targetEmail
                     })

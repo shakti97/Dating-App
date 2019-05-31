@@ -108,7 +108,7 @@ const UserOperations = {
     );
   },
   getBlockedUser(req,res){
-    console.log('i m running');
+    // console.log('i m running');
     userSchema.find({
       email : req.decoded.userEmail
     },{blocked : 1},(err,data)=>{
@@ -118,7 +118,7 @@ const UserOperations = {
           message : 'Internal Server Error'
         })
       }
-      console.log(data);
+      // console.log(data);
       res.json({
         success : true,
         message : 'Successfully fetched blocked user Array',
